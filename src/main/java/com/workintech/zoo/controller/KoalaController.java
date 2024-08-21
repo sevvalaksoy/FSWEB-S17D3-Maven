@@ -38,6 +38,9 @@ public class KoalaController {
 
     @PostMapping
     public Koala postKoala(@RequestBody Koala koala){
+        if(koala.getId() <= 0){
+            throw new ZooException("Object cannot be empty. ", HttpStatus.BAD_REQUEST);
+        }
         koalas.put(koala.getId(), koala);
         return koala;
     }
