@@ -38,6 +38,9 @@ public class KangarooController {
 
     @PostMapping
     public Kangaroo postKangaroo(@RequestBody Kangaroo kangaroo){
+        if(kangaroo.getId() <= 0){
+            throw new ZooException("Object cannot be empty. ", HttpStatus.BAD_REQUEST);
+        }
         kangaroos.put(kangaroo.getId(), kangaroo);
         return kangaroo;
     }
@@ -55,7 +58,8 @@ public class KangarooController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteKangaroo(@PathVariable int id){
+    public Kangaroo deleteKangaroo(@PathVariable int id){
+        Kangaroo kangaroo = kangaroos.get(id);
         if(id <= 0){
             throw new ZooException("Id must be greater than 0", HttpStatus.BAD_REQUEST);
         }
@@ -63,5 +67,6 @@ public class KangarooController {
             throw new ZooException("Kangaroo with the given id does not exist: " + id, HttpStatus.NOT_FOUND);
         }
         kangaroos.remove(id);
+        return kangaroo;
     }
 }
